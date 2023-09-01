@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import loginImage from "../assets/login.svg";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../features/auth/authSlice";
+import { toast } from "react-hot-toast";
 const Signup = () => {
   const { handleSubmit, register, reset, control } = useForm();
   const password = useWatch({ control, name: "password" });
@@ -25,6 +26,14 @@ const Signup = () => {
       setDisabled(true);
     }
   }, [password, confirmPassword]);
+
+  const { isError, error } = useSelector(state => state.auth)
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error)
+    }
+  }, [error])
 
   const onSubmit = (data) => {
     dispatch(createUser({ email: data.email, password: data.password }));

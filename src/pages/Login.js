@@ -4,18 +4,27 @@ import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/login.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { googleLogin, loginUser } from "../features/auth/authSlice";
+import { toast } from "react-hot-toast";
 const Login = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { email, isLoading } = useSelector(state => state.auth)
+  const { email, isLoading, isError, error } = useSelector(state => state.auth)
 
   useEffect(() => {
     if (email && !isLoading) {
       navigate('/')
     }
   }, [email, isLoading])
+
+  useEffect(() => {
+    if (isError) {
+      if (error == 'Firebase: Error (auth/wrong-password).') {
+        toast.error('Wrong Email or Password')
+      }
+    }
+  }, [error])
 
   const onSubmit = ({ email, password }) => {
     dispatch(loginUser({ email, password }))

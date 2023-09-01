@@ -42,7 +42,7 @@ const Navbar = () => {
               >Login
               </Link>
               :
-              <p className='btn btn-primary' onClick={handleSignOut}>Sign Out</p>
+              <p className='btn cursor-pointer text-white' onClick={handleSignOut}>Sign Out</p>
           }
         </li>
       </ul>
