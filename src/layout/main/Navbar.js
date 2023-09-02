@@ -8,7 +8,7 @@ import { logOut } from "../../features/auth/authSlice";
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const { email } = useSelector(state => state.auth);
+  const { email, role } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const handleSignOut = () => {
@@ -32,7 +32,24 @@ const Navbar = () => {
             Jobs
           </Link>
         </li>
-
+        <li>
+        {email && role &&
+            <Link
+                className='border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all '
+                to='/dashboard'
+              >Dashboard
+              </Link>
+          }
+        </li>
+        <li>
+        {email && !role &&
+            <Link
+                className='border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all '
+                to='/register'
+              >Get Stated
+              </Link>
+          }
+        </li>
         <li>
           {
             !email ?
@@ -42,7 +59,7 @@ const Navbar = () => {
               >Login
               </Link>
               :
-              <p className='btn cursor-pointer text-white' onClick={handleSignOut}>Sign Out</p>
+              <p className='btn btn-sm ' onClick={handleSignOut}>Sign Out</p>
           }
         </li>
       </ul>
