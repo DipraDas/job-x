@@ -7,7 +7,6 @@ const authApi = apiSlice.injectEndpoints({
                 method: 'POST',
                 url: '/user',
                 body: data
-
             })
         })
     })

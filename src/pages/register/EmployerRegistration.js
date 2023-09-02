@@ -3,6 +3,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
 import { useRegisterMutation } from "../../features/auth/authApi";
+import { useSelector } from "react-redux";
 
 const EmployerRegistration = () => {
   const [countries, setCountries] = useState([]);
@@ -11,6 +12,7 @@ const EmployerRegistration = () => {
   const term = useWatch({ control, name: "term" });
   const navigate = useNavigate();
   const [postUser, { isLoading, isError }] = useRegisterMutation();
+  const { email } = useSelector(state => state.auth)
 
   const businessCategory = [
     "Automotive",
@@ -42,7 +44,8 @@ const EmployerRegistration = () => {
   }, []);
 
   const onSubmit = (data) => {
-    console.log(data);
+    postUser({ ...data, role: 'employer' })
+    
   };
 
   return (
@@ -76,7 +79,7 @@ const EmployerRegistration = () => {
             <label className='mb-2' htmlFor='email'>
               Email
             </label>
-            <input type='email' id='email' disabled {...register("email")} />
+            <input type='email' id='email' value={email} {...register("email")} />
           </div>
           <div className='flex flex-col w-full max-w-xs'>
             <h1 className='mb-3'>Gender</h1>
@@ -88,7 +91,7 @@ const EmployerRegistration = () => {
                   {...register("gender")}
                   value='male'
                 />
-                <label className='ml-2 text-lg' for='male'>
+                <label className='ml-2 text-lg' htmlFor='male'>
                   Male
                 </label>
               </div>
@@ -99,7 +102,7 @@ const EmployerRegistration = () => {
                   {...register("gender")}
                   value='female'
                 />
-                <label className='ml-2 text-lg' for='female'>
+                <label className='ml-2 text-lg' htmlFor='female'>
                   Female
                 </label>
               </div>
@@ -110,7 +113,7 @@ const EmployerRegistration = () => {
                   {...register("gender")}
                   value='other'
                 />
-                <label className='ml-2 text-lg' for='other'>
+                <label className='ml-2 text-lg' htmlFor='other'>
                   Other
                 </label>
               </div>
@@ -124,27 +127,27 @@ const EmployerRegistration = () => {
             <input type='text' {...register("companyName")} id='companyName' />
           </div>
           <div className='flex flex-col w-full max-w-xs'>
-            <label className='mb-3' for='employeeRange'>
+            <label className='mb-3' htmlFor='employeeRange'>
               Number of employee
             </label>
             <select {...register("employeeRange")} id='employeeRange'>
               {employeeRange
                 .sort((a, b) => a.localeCompare(b))
                 .map((category) => (
-                  <option value={category}>{category}</option>
+                  <option key={category} value={category}>{category}</option>
                 ))}
             </select>
           </div>
 
           <div className='flex flex-col w-full max-w-xs'>
-            <label className='mb-3' for='companyCategory'>
+            <label className='mb-3' htmlFor='companyCategory'>
               Company's Category
             </label>
             <select {...register("companyCategory")} id='companyCategory'>
               {businessCategory
                 .sort((a, b) => a.localeCompare(b))
                 .map((category) => (
-                  <option value={category}>{category}</option>
+                  <option key={category} value={category}>{category}</option>
                 ))}
             </select>
           </div>
@@ -167,7 +170,7 @@ const EmployerRegistration = () => {
                 {...register("term")}
                 id='terms'
               />
-              <label for='terms'>I agree to terms and conditions</label>
+              <label htmlFor='terms'>I agree to terms and conditions</label>
             </div>
             <button disabled={!term} className='btn' type='submit'>
               Submit
